@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500&display=swap');
+body{
+    font-family: 'Raleway';
+}
+
+.md-wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+}
+
+.title {
+    font-size: 38px;
+    font-weight: bold;
+
+    margin:15px 0;
+    padding:0 15px;
+}
+
+
+.mgs-error{
+    color:red;
+    font-weight: bold;
+}
+
+.chart{
+    width:80%;
+    height: 350px;
+    border:1px solid red;
+
+}
+
+.md-c-right{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.md-c-left{
+    display: flex;
+    justify-content: center;
+}
+
+.pkc-container {
+    margin:15px 0;
+}
+
+.range-display{
+    margin:15px 0;
+    display: flex;
+
+}
+.actualRange {
+    margin:0 15px;
+}
+
+.md-conatiner-wp {
+
+}

@@ -4,17 +4,61 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
     <title>EVIOR: Interfaz grafica</title>
 </head>
 <body>
-    <h1>Hola a todos! </h1>
 
-    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    <div class="title">Eivor: Interfaz Grafica</div>
+    
+    <div class="md-wrapper">
+            <div class="md-c-left">
+                <div class="md-container-wp">
+                    <button class="md-start" id="start-controller">
+                        Start
+                    </button> 
+                    
+                    <button class="md-stop" id="stop-controller">
+                        Stop
+                    </button>
+    
+                    <div class="pkc-container">
+                        <span class="sub"> Tamaño del paquete (seg) </span>
+                        <div class="range-display">
+                            <div class="input-container">
+                                <input type="range" id="pkg-controller" class="pkc-input" min="0" max="15" value="3" list="steplist">
+                                <datalist id="steplist">
+                                    <option>0</option>
+                                    <option>3</option>
+                                    <option>6</option>
+                                    <option>9</option>
+                                    <option>12</option>
+                                    <option>15</option>
+                                </datalist>
+                            </div>
+                            
+                            <div class="actualRange" id="ar">
+                                <span id="ar-value">3</span>
+                                <span> seg</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span id="error" class="mgs-error">
+    
+                    </span>
+                </div>
+            </div>
+            <div class="md-c-right">
+                    <div id="curve_chart" class="chart"></div>
 
-    <button onclick="readData()">
-        Start
-    </button>
+                    <div id="av_chart" class="chart"></div>
+            </div>
+    </div>
 
+
+
+
+    <!-- end of UI -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="/eel.js"></script>
     <script src="script.js"></script>
