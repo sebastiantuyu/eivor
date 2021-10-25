@@ -46,11 +46,43 @@
                     <span id="error" class="mgs-error">
     
                     </span>
+
+                    <div>
+                        <div class="flex i-flex"
+                            >
+                            <input 
+                                type="checkbox" name="" 
+                                id="cb-pot-zero"
+                                checked="true"
+                                >
+                            <span>Potenciometro 1</span>
+                        </div>                        
+                        
+                        <div class="flex i-flex"
+                            >
+                            <input type="checkbox" name="" id="cb-pot-one">
+                            <span>Potenciometro 2</span>
+                        </div>                        
+
+                    </div>
+                    
+                    <div style="display: flex;margin:15px 0">
+                        <div style="display: flex;flex-direction: column;">
+                            <span>Mayor</span>
+                            <span id="biggest"> N/A </span>
+                        </div>
+
+                        <div style="display: flex;flex-direction: column;margin:0 0 0 25px;">
+                            <span>Menor</span>
+                            <span id="smallest"> N/A </span>
+                        </div>  
+                    </div>
+
                 </div>
             </div>
             <div class="md-c-right">
                     <div id="curve_chart" class="chart"></div>
-
+                    <div id="curve_chart_0" class="chart"></div>
                     <div id="av_chart" class="chart"></div>
             </div>
     </div>

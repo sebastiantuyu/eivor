@@ -21,22 +21,23 @@ def worker(pkg_size):
         
             time_ = time.time()
             position = 0
-            DATA = {}
+            DATA_0 = {}
+            DATA_1 = {}
             while (pkg_size > time.time() - time_):
-                raw = ser.read(size=2)
+                raw = ser.read(size=4)
             
                 if raw:
                     try:
-                        # read the high and low byte
-                        high, low = raw
-            
-                        # add up our bits from high and low byte
-                        # to get the final value
-                        DATA[position] = high * 256 + low
+                        #Read high and low values for each raw 
+                        sensor_0h,sensor_0l,sensor_1h,sensor_1l = raw
+
+                        # Pack inside the DATA map
+                        DATA_0[position] = sensor_0h * 256 + sensor_0l
+                        DATA_1[position] = sensor_1h * 256 + sensor_1l
                         position+=1
                     except:
                         pass
-            return json.dumps(DATA)
+            return (json.dumps(DATA_0),json.dumps(DATA_1))
     else:
         print("Error while reading values...",pkg_size)
         return json.dumps({0 : 0})
