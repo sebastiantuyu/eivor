@@ -5,9 +5,8 @@ let avCache = []
 let isReading = true 
 let isLoading = false
 let GLOBAL_POINTER = 0
-const DATA = [["Seconds","Value"]]
-const DATA_0 = [["Seconds","Value"]]
-const AV_DATA = [["Seconds","Value"]]
+let DATA = [["Seconds","Value"]]
+let AV_DATA = [["Seconds","Value"]]
 const errorMessage = document.querySelector("#error")
 const biggest = document.querySelector("#biggest")
 const smallest = document.querySelector("#smallest")
@@ -64,28 +63,24 @@ async function run() {
         errorMessage.innerHTML = "Arduino se desconecto!"
     }
     if(isLoading){ isLoading = false}
-    return [JSON.parse(results[0]),JSON.parse(results[1])]
+    return [JSON.parse(results)]
 }
 
 async function readData() {
     console.log("reading data...")
     google.charts.load('current', {'packages':['corechart']})
     let prevCounter = 0
+    let triggerCounter = 0;
     while(isReading == true) {
-        const [data_,data_0] = await run()
+        const [data_] = await run()
 
         if(!GLOBAL_POINTER) getBiggAndSmall(data_)
-        else getBiggAndSmall(data_0)
 
         for(d in data_ ){
             // avoid big numbers noise
             // If POT is poiting to ==> 0
-            if(data_[d] > 1023 || data_0[d] > 1023) {
+            if(data_[d] > 1023) {
                 
-                if(data_0[d] > 1023) {
-                    DATA_0.push([prevCounter,1023])
-                }
-
                 if(data_[d] > 1023) {
                     DATA.push([prevCounter,1023])
                 }
@@ -95,17 +90,16 @@ async function readData() {
             else {
                 
                 DATA.push([prevCounter,data_[d]])
-                DATA_0.push([prevCounter,data_0[d]])
                 
-                if (!GLOBAL_POINTER) 
-                    computeAverage(data_[d])
-                else 
-                    computeAverage(data_0[d])
+                if (!GLOBAL_POINTER) computeAverage(data_[d])
             }
             
             prevCounter+=1
         }
+
         google.charts.setOnLoadCallback(drawChart);
+        DATA.splice(1,(DATA.length/2));
+        AV_DATA.splice(1,(AV_DATA.length/2));
     }
     
 }
@@ -113,25 +107,16 @@ async function readData() {
 
 function drawChart() {
     var data = google.visualization.arrayToDataTable(DATA);
-    var data_0 = google.visualization.arrayToDataTable(DATA_0);
     var dataAv = google.visualization.arrayToDataTable(AV_DATA);
 
 
     var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-    var chart_0 = new google.visualization.LineChart(document.getElementById('curve_chart_0'));
     var avChart = new google.visualization.LineChart(document.getElementById('av_chart'));
 
 
 
     chart.draw(data,{
         title: 'Real-time, Potentiometer 1',
-        curveType: 'function',
-        legend: { position: 'bottom' },
-        vAxis: {title:'Valores',maxVal:1023,minVal:0}
-    });
-
-    chart_0.draw(data_0,{
-        title: 'Real-time, Potentiometer 2',
         curveType: 'function',
         legend: { position: 'bottom' },
         vAxis: {title:'Valores',maxVal:1023,minVal:0}
@@ -150,7 +135,7 @@ const computeAverage = (val) => {
     pastN+=1
     avCache.push(val)
     
-    if(pastN > 200) {
+    if(pastN > 20) {
         let av = avCache.reduce((a,b) => a + b, 0) / avCache.length;
         AV_DATA.push([AV_DATA.length+1,av])
         avCache.shift()
@@ -170,7 +155,6 @@ const getBiggAndSmall = (d_) => {
 
 const switchMetrics = (target,to) => {
     DATA.splice(1,DATA.length)
-    DATA_0.splice(1,DATA_0.length)
 
     if(to === "zero"){
         target.checked = false;

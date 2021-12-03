@@ -4,7 +4,7 @@ import serial
 import eel
 import json
 
-DEV = '/dev/ttyACM0'
+DEV = 'COM3'
 DATA = {}
 
 def setup():
@@ -22,22 +22,22 @@ def worker(pkg_size):
             time_ = time.time()
             position = 0
             DATA_0 = {}
-            DATA_1 = {}
+            # DATA_1 = {}
             while (pkg_size > time.time() - time_):
-                raw = ser.read(size=4)
+                raw = ser.read(size=2)
             
                 if raw:
                     try:
                         #Read high and low values for each raw 
-                        sensor_0h,sensor_0l,sensor_1h,sensor_1l = raw
+                        sensor_0h,sensor_0l = raw
 
                         # Pack inside the DATA map
                         DATA_0[position] = sensor_0h * 256 + sensor_0l
-                        DATA_1[position] = sensor_1h * 256 + sensor_1l
+                        # DATA_1[position] = sensor_1h * 256 + sensor_1l
                         position+=1
                     except:
-                        pass
-            return (json.dumps(DATA_0),json.dumps(DATA_1))
+                        raise TypeError("Issue while fetching data")
+            return (json.dumps(DATA_0))
     else:
         print("Error while reading values...",pkg_size)
         return json.dumps({0 : 0})
